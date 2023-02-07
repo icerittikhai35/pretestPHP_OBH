@@ -1,13 +1,13 @@
 <?php
 session_start();
 
-
-if ($_SESSION['user_level'] != 0) {
-
+if ($_SESSION['user_level'] == NULL) {
     header('location: login.php');
 }
 
-
+if ($_SESSION['user_level'] != 0) {
+    header('location: login.php');
+}
 
 if (isset($_GET['logout'])) {
     session_destroy();
@@ -134,62 +134,9 @@ if (isset($_GET['logout'])) {
             display: none;
         }
     </style>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('[data-toggle="tooltip"]').tooltip();
-            var actions = $("table td:last-child").html();
-            // Append table with add row form on add new button click
-            $(".add-new").click(function() {
-                $(this).attr("disabled", "disabled");
-                var index = $("table tbody tr:last-child").index();
-                var row = '<tr>' +
-                    '<td><input type="text" class="form-control" name="name" id="name"></td>' +
-                    '<td><input type="text" class="form-control" name="department" id="department"></td>' +
-                    '<td><input type="text" class="form-control" name="phone" id="phone"></td>' +
-                    '<td>' + actions + '</td>' +
-                    '</tr>';
-                $("table").append(row);
-                $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
-                $('[data-toggle="tooltip"]').tooltip();
-            });
-            // Add row on add button click
-            $(document).on("click", ".add", function() {
-                var empty = false;
-                var input = $(this).parents("tr").find('input[type="text"]');
-                input.each(function() {
-                    if (!$(this).val()) {
-                        $(this).addClass("error");
-                        empty = true;
-                    } else {
-                        $(this).removeClass("error");
-                    }
-                });
-                $(this).parents("tr").find(".error").first().focus();
-                if (!empty) {
-                    input.each(function() {
-                        $(this).parent("td").html($(this).val());
-                    });
-                    $(this).parents("tr").find(".add, .edit").toggle();
-                    $(".add-new").removeAttr("disabled");
-                }
-            });
-            // Edit row on edit button click
-            $(document).on("click", ".edit", function() {
-                $(this).parents("tr").find("td:not(:last-child)").each(function() {
-                    $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
-                });
-                $(this).parents("tr").find(".add, .edit").toggle();
-                $(".add-new").attr("disabled", "disabled");
-            });
-            // Delete row on delete button click
-            $(document).on("click", ".delete", function() {
-                $(this).parents("tr").remove();
-                $(".add-new").removeAttr("disabled");
-            });
-        });
-    </script>
+
     <title>Home Page</title>
-    <?php echo 'ระดับผู้ใช้ =' . $_SESSION['user_level']; ?>
+    <!-- <?php echo 'ระดับผู้ใช้ =' . $_SESSION['user_level']; ?> -->
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -216,65 +163,76 @@ if (isset($_GET['logout'])) {
         <!-- logged in user information -->
         <?php if (isset($_SESSION['username'])) : ?>
             <p>Welcome <strong><?php echo $_SESSION['username']; ?></strong></p>
-            <p><a href="index.php?logout='1'" style="color: red;">Logout</a></p>
-        <?php endif ?>
-    </div>
-    <div class="container">
-        <div class="table-wrapper">
-            <div class="table-title">
-                <div class="row">
-                    <div class="col-sm-8">
-                        <h2>Employee <b>Details</b></h2>
-                    </div>
-                    <div class="col-sm-4">
-                        <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
+            <div class="container">
+                <div class="table-wrapper">
+                    <div class="table-title"></div>
+                    <div class="row">
+                        <div class="col-sm-15">
+                            <h2><b>Users</b></h2>
+                        </div>
+
                     </div>
                 </div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>User Level</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Tel</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Ref code</th>
+                            <th>Ref remark</th>
+                            <th>Remark</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+
+                        <?php
+
+                        include('server.php');
+                        $sql = "SELECT * FROM member WHERE user_level >= 0";
+                        $result = mysqli_query($conn, $sql);
+                        while ($row = mysqli_fetch_assoc($result)) {
+                        ?>
+                            <tr>
+                                <td><?php echo $row['username']; ?></td>
+                                <td><?php echo $row['user_level']; ?></td>
+                                <td><?php echo $row['fname']; ?></td>
+                                <td><?php echo $row['lname']; ?></td>
+                                <td><?php echo $row['tel']; ?></td>
+                                <td><?php echo $row['email']; ?></td>
+                                <td><?php echo $row['address']; ?></td>
+                                <td><?php echo $row['ref_code']; ?></td>
+                                <td><?php echo $row['ref_remark']; ?></td>
+                                <td><?php echo $row['remark']; ?></td>
+                                <td>
+                                    <a class="edit" title="Edit" href="update.php?id=<?php echo $row['id']; ?>"  data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                                    <a class="delete" title="Delete"  href="delete.php?id=<?php echo $row['id']; ?>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                </td>
+
+            
+                            </tr>
+                        <?php
+                        }
+                        ?>
+
+
+
+                    </tbody>
+                </table>
             </div>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Department</th>
-                        <th>Phone</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>John Doe</td>
-                        <td>Administration</td>
-                        <td>(171) 555-2222</td>
-                        <td>
-                            <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Peter Parker</td>
-                        <td>Customer Service</td>
-                        <td>(313) 555-5735</td>
-                        <td>
-                            <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Fran Wilson</td>
-                        <td>Human Resources</td>
-                        <td>(503) 555-9931</td>
-                        <td>
-                            <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <p><a href="index.php?logout='1'" style="color: red;">Logout</a></p>
     </div>
+
+<?php endif ?>
+</div>
+
 </body>
 
 </html>
