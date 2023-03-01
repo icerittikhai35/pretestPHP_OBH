@@ -6,7 +6,6 @@ if (isset($_POST['update'])) {
 
     $id = $_POST['id'];
     $fname = $_POST['fname'];
-    $user_level = $_POST['user_level'];
     $lname = $_POST['lname'];
     $email = $_POST['email'];
     $tel = $_POST['tel'];
@@ -18,7 +17,7 @@ if (isset($_POST['update'])) {
 
 
 
-    $sql = "UPDATE member SET  fname='" . $fname . "',lname='" . $lname . "',user_level='" . $user_level . "', email='" . $email . "',email='" . $email . "',tel='" . $tel . "',address='" . $address . "',ref_code='" . $ref_code . "',ref_remark='" . $ref_remark . "',remark='" . $remark . "' WHERE id='" . $id . "' ";
+    $sql = "UPDATE member SET  fname='" . $fname . "',lname='" . $lname . "', email='" . $email . "',email='" . $email . "',tel='" . $tel . "',address='" . $address . "',ref_code='" . $ref_code . "',ref_remark='" . $ref_remark . "',remark='" . $remark . "' WHERE id='" . $id . "' ";
 
     $result = $conn->query($sql);
 
@@ -62,8 +61,6 @@ if (isset($_GET['id'])) {
             $ref_remark = $row['ref_remark'];
 
             $remark = $row['remark'];
-
-            $user_level = $row['user_level'];
         }
 
 ?>
@@ -78,7 +75,7 @@ if (isset($_GET['id'])) {
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-          
+
 
             <title>Home Page</title>
             <!-- <?php echo 'ระดับผู้ใช้ =' . $_SESSION['user_level']; ?> -->
@@ -87,11 +84,7 @@ if (isset($_GET['id'])) {
         </head>
 
         <body>
-           
-
-
-            <form action="" method="post">
-           
+            < <form action="" method="post">
                 <input type="hidden" name="id" value="<?php echo $id; ?>">
                 <h2>User Update Form</h2>
                 <fieldset>
@@ -108,10 +101,6 @@ if (isset($_GET['id'])) {
 
                     <input type="text" name="lname" value="<?php echo $lname; ?>">
 
-                    <br>
-                    User Level:<br>
-
-                    <input type="text" name="user_level" value="<?php echo $user_level; ?>">
 
                     <br>
 
@@ -159,7 +148,7 @@ if (isset($_GET['id'])) {
 
                 </fieldset>
 
-            </form>
+                </form>
 
         </body>
 

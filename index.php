@@ -12,6 +12,7 @@ if ($_SESSION['user_level'] != 0) {
 if (isset($_GET['logout'])) {
     session_destroy();
     unset($_SESSION['user_level']);
+    unset($_SESSION['username']);
     header('location: login.php');
 }
 
@@ -125,7 +126,7 @@ if (isset($_GET['logout'])) {
             box-shadow: none;
             border-radius: 2px;
         }
-
+  
         table.table .form-control.error {
             border-color: #f50000;
         }
@@ -163,6 +164,8 @@ if (isset($_GET['logout'])) {
         <!-- logged in user information -->
         <?php if (isset($_SESSION['username'])) : ?>
             <p>Welcome <strong><?php echo $_SESSION['username']; ?></strong></p>
+
+
             <div class="container">
                 <div class="table-wrapper">
                     <div class="table-title"></div>
@@ -212,11 +215,11 @@ if (isset($_GET['logout'])) {
                                 <td><?php echo $row['ref_remark']; ?></td>
                                 <td><?php echo $row['remark']; ?></td>
                                 <td>
-                                    <a class="edit" title="Edit" href="update.php?id=<?php echo $row['id']; ?>"  data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                                    <a class="delete" title="Delete"  href="delete.php?id=<?php echo $row['id']; ?>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                    <a class="edit" title="Edit" href="update.php?id=<?php echo $row['id']; ?>" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                                    <a class="delete" title="Delete" href="delete.php?id=<?php echo $row['id']; ?>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                                 </td>
 
-            
+
                             </tr>
                         <?php
                         }

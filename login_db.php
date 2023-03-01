@@ -46,11 +46,12 @@ if (isset($_POST['login_user'])) {
 
 
             $ipaddress = get_client_ip();
- 
+
 
   
 
         if (mysqli_num_rows($result) == 1) {
+            $_SESSION['id'] = $data['id'];
             $_SESSION['username'] = $username;
             $_SESSION['fname'] = $data['fname'];
             $_SESSION['lname'] = $data['lname'];
@@ -62,20 +63,18 @@ if (isset($_POST['login_user'])) {
             $_SESSION['user_level'] = $data['user_level'];
             $_SESSION['success'] = "Your are now logged in";
             if ($data['user_level'] == 0) {
-                $login_flag = '0';
+                $login_flag = '1';
                 header("location: index.php");
             } else if ($data['user_level'] == 1) {
                 $login_flag = '1';
                 header("location: index_staff.php");
             } else if ($data['user_level'] == 2) {
-                $login_flag = '2';
-
+                $login_flag = '1';
                 header("location: index_user.php");
             }
-
-        } else {
-            $login_flag = '1';
  
+        } else {
+            $login_flag = '0';
             array_push($errors, "Wrong Username or Password");
             $_SESSION['error'] = "Wrong Username or Password!";
             header("location: login.php");
@@ -83,8 +82,6 @@ if (isset($_POST['login_user'])) {
 
 
         $sql = "INSERT INTO login_log (username,login_flag,ip_address) VALUES ('".$username."','".$login_flag."','".$ipaddress."')";
-
-    
          $result = mysqli_query($conn, $sql);
 
 

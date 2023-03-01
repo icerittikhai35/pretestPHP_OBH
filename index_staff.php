@@ -213,11 +213,11 @@ if (isset($_GET['logout'])) {
                                 <td><?php echo $row['ref_remark']; ?></td>
                                 <td><?php echo $row['remark']; ?></td>
                                 <td>
-                                    <a class="edit" title="Edit" href="update.php?id=<?php echo $row['id']; ?>"  data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                                    <a class="delete" title="Delete"  href="delete.php?id=<?php echo $row['id']; ?>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                    <a class="edit" title="Edit" href="update_staff.php?id=<?php echo $row['id']; ?>" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                                    <a class="delete" title="Delete" href="delete.php?id=<?php echo $row['id']; ?>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                                 </td>
 
-            
+
                             </tr>
                         <?php
                         }
@@ -227,7 +227,9 @@ if (isset($_GET['logout'])) {
 
                     </tbody>
                 </table>
+                
             </div>
+
             <p><a href="index.php?logout='1'" style="color: red;">Logout</a></p>
     </div>
 

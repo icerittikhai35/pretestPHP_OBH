@@ -73,7 +73,7 @@
         if (count($errors) == 0) {
             $password = md5($password_1);
 
-            $sql = "INSERT INTO member (username, email, tel, fname, lname, address, ref_code, ref_remark,  password) VALUES ('$username', '$email','$tel','$fname','$lname','$address','$ref_code','$ref_remark', '$password')";
+            $sql = "INSERT INTO member (username, email, tel, fname, lname, address, ref_code, ref_remark,  password) VALUES ('$username', '$email','$tel','$fname','$lname','$address','$ref_code','$ref_remark', '$password ')";
             mysqli_query($conn, $sql);
 
             $_SESSION['username'] = $username;
