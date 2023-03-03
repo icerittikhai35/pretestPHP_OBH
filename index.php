@@ -1,18 +1,23 @@
 <?php
+//session_start() เป็นฟังก์ชันที่ใช้เริ่มต้นเซสชันใน PHP โดยที่เซสชัน (session) เป็นการเก็บข้อมูลชั่วคราวของผู้ใช้งานบนเว็บไซต์
 session_start();
 
+// สร้าง condition เช็คว่า _SESSION ถ้า 'user_level' มีค่าว่างให้ไปที่หน้า login.php
 if ($_SESSION['user_level'] == NULL) {
     header('location: login.php');
 }
-
+// สร้าง condition เช็คว่า _SESSION ถ้า 'user_level' มีค่าไม่เท่ากับ '!= 0' ให้ไปที่หน้า login.php
 if ($_SESSION['user_level'] != 0) {
     header('location: login.php');
 }
-
+// สร้าง condition เช็คว่า ได้ส่ง ข้อมูล_GET['logout'] มาไหมถ้าส่งมาให้ทำการ  session_destroy();
+//isset คือFunction เช็คค่าว่ามี(ข้อมูลข้างในหรือไม่) 
 if (isset($_GET['logout'])) {
     session_destroy();
+    //unset($_SESSION['user_level']) เป็นฟังก์ชันที่ใช้ลบค่าของตัวแปร 'user_level' ออกจากตัวแปร $_SESSION
     unset($_SESSION['user_level']);
     unset($_SESSION['username']);
+    //ถ้าcondition เป็นไปตามเงื่อนไขทำงาน Functionก่อนหน้าและให้ไปหน้า login.php
     header('location: login.php');
 }
 
@@ -25,6 +30,7 @@ if (isset($_GET['logout'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap Table with Add and Delete Row Feature</title>
+    <!-- ทำการ Link Bootstrap และ CSS -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -126,7 +132,7 @@ if (isset($_GET['logout'])) {
             box-shadow: none;
             border-radius: 2px;
         }
-  
+
         table.table .form-control.error {
             border-color: #f50000;
         }
@@ -149,7 +155,8 @@ if (isset($_GET['logout'])) {
     </div>
 
     <div class="homecontent">
-        <!--  notification message -->
+        <!--  ข้อความแจ้งเตือน -->
+        <!--  ถ้า $_SESSION มีค่าเป็น 'success'  ให้แสดงข้อความใน $_SESSION['success'] และทำการลบค่า_SESSIONโดยใช้ unset($_SESSION['success'])-->
         <?php if (isset($_SESSION['success'])) : ?>
             <div class="success">
                 <h3>
@@ -160,6 +167,7 @@ if (isset($_GET['logout'])) {
                 </h3>
             </div>
         <?php endif ?>
+        
 
         <!-- logged in user information -->
         <?php if (isset($_SESSION['username'])) : ?>
