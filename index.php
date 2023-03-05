@@ -148,7 +148,7 @@ if (isset($_GET['logout'])) {
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body> 
 
     <div class="homeheader">
         <h2>Home Page</h2>
@@ -172,7 +172,6 @@ if (isset($_GET['logout'])) {
         <!-- logged in user information -->
         <?php if (isset($_SESSION['username'])) : ?>
             <p>Welcome <strong><?php echo $_SESSION['username']; ?></strong></p>
-
 
             <div class="container">
                 <div class="table-wrapper">
@@ -201,11 +200,7 @@ if (isset($_GET['logout'])) {
                         </tr>
                     </thead>
                     <tbody>
-
-
-
                         <?php
-
                         include('server.php');
                         $sql = "SELECT * FROM member WHERE user_level >= 0";
                         $result = mysqli_query($conn, $sql);
@@ -224,7 +219,7 @@ if (isset($_GET['logout'])) {
                                 <td><?php echo $row['remark']; ?></td>
                                 <td>
                                     <a class="edit" title="Edit" href="update.php?id=<?php echo $row['id']; ?>" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                                    <a class="delete" title="Delete" href="delete.php?id=<?php echo $row['id']; ?>" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                    <a class="delete" title="Delete" href="delete.php?id=<?php echo $row['id']; ?>" data-toggle="tooltip"><i class="material-icons" onclick="return confirm('Are you sure you want to delete this record?')">&#xE872;</i></a>
                                 </td>
 
 
@@ -232,9 +227,6 @@ if (isset($_GET['logout'])) {
                         <?php
                         }
                         ?>
-
-
-
                     </tbody>
                 </table>
             </div>
@@ -247,3 +239,4 @@ if (isset($_GET['logout'])) {
 </body>
 
 </html>
+?>

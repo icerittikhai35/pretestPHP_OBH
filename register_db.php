@@ -3,8 +3,10 @@
     include('server.php');
     
     $errors = array();
-
+ 
+    //เช็คถ้ามีการส่งข้อมูล reg_user จากform มาให้ทำงาน
     if (isset($_POST['reg_user'])) {
+        // สร้างตัวแปร $username ฟังก์ชั่น mysql_real_escape_string() เป็นฟังก์ชั่นสำหรับการเปลี่ยนอักขระพิเศษที่ส่งเข้ามาให้กลายเป็น string (เชื่อมต่อฐานข้อมูล $con,รับค่าจาก $POST มาเก็บไว้ในตัวแปร)
         $username = mysqli_real_escape_string($conn, $_POST['username']);
         $email = mysqli_real_escape_string($conn, $_POST['email']);
         $tel = mysqli_real_escape_string($conn, $_POST['tel']);
@@ -61,23 +63,29 @@
         $query = mysqli_query($conn, $user_check_query);
         $result = mysqli_fetch_assoc($query);
 
+
+        //เช็คถ้า $result เป็น Ture แล้วให้ทำ
         if ($result) { // if user exists
+            //เช็ค username ถ้ากรอกสมัครมาซ้ำกับข้อมูลเดิมที่มีใน ฐานข้อมูลให้ มีError และส่งErrorไปแสดง
             if ($result['username'] === $username) {
                 array_push($errors, "Username already exists");
+                $_SESSION['error'] = "Username already exists";
             }
+            //เช็ค email ถ้ากรอกสมัครมาซ้ำกับข้อมูลเดิมที่มีใน ฐานข้อมูลให้ มีError และส่งErrorไปแสดง
             if ($result['email'] === $email) {
                 array_push($errors, "Email already exists");
+                $_SESSION['error'] = "Email already exists";
             }
         }
 
+        //ถ้า error เท่ากับ 0 หรือไม่มี error แล้วให้ทำ
         if (count($errors) == 0) {
+            //สร้างตัวแปร $password มาเข้ารหัส Password เป็น MD5 เพื่อความปลอกภัยของข้อมูล User 
             $password = md5($password_1);
-
+            //สร้างตัวแปร $sql ไว้เก็บคำสั่ง insert ข้อมูลไปยัง sql server 
             $sql = "INSERT INTO member (username, email, tel, fname, lname, address, ref_code, ref_remark,  password) VALUES ('$username', '$email','$tel','$fname','$lname','$address','$ref_code','$ref_remark', '$password ')";
+            //นำข้อมูลไปยังฐานข้อมูล และตารางในฐานข้อมูล ($con,$sql)
             mysqli_query($conn, $sql);
-
-            $_SESSION['username'] = $username;
-            $_SESSION['success'] = "You are now logged in";
             header('location: login.php');
             
         } else {

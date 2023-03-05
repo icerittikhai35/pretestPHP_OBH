@@ -18,6 +18,7 @@
         <h2>Login</h2>
     </div>
 
+
     <form action="login_db.php" method="post">
         <?php if (isset($_SESSION['error'])) : ?>
             <div class="error">
