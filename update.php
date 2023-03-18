@@ -2,6 +2,7 @@
 
 include "server.php";
 
+
 if (isset($_POST['update'])) {
 
     $id = $_POST['id'];
@@ -20,7 +21,7 @@ if (isset($_POST['update'])) {
 
     $sql = "UPDATE member SET  fname='" . $fname . "',lname='" . $lname . "',user_level='" . $user_level . "', email='" . $email . "',email='" . $email . "',tel='" . $tel . "',address='" . $address . "',ref_code='" . $ref_code . "',ref_remark='" . $ref_remark . "',remark='" . $remark . "' WHERE id='" . $id . "' ";
 
-    $result = $conn->query($sql);
+    $result = mysqli_query($conn,$sql);
 
     if ($result == TRUE) {
 
@@ -31,7 +32,7 @@ if (isset($_POST['update'])) {
         echo "Error:" . $sql . "<br>" . $conn->error;
         header("location: update.php");
     }
-}
+} 
 
 if (isset($_GET['id'])) {
 
@@ -39,11 +40,11 @@ if (isset($_GET['id'])) {
 
     $sql = "SELECT * FROM `member` WHERE `id`='$id'";
 
-    $result = $conn->query($sql);
+    $result = mysqli_query($conn,$sql);
 
     if ($result->num_rows > 0) {
 
-        while ($row = $result->fetch_assoc()) {
+        while ($row = mysqli_fetch_assoc($result)) {
 
             $id = $row['id'];
 

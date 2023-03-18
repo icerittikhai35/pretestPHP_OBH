@@ -84,7 +84,7 @@ if (isset($_POST['login_user'])) {
 
         //
         $sql = "INSERT INTO login_log (username,login_flag,ip_address) VALUES ('".$username."','".$login_flag."','".$ipaddress."')";
-        $result = mysqli_query($conn, $sql);
+        $result = mysqli_query($conn, $sql); 
 
 
     } else {
